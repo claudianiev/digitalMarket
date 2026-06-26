@@ -1,0 +1,21 @@
+app:
+  base-path: /digitalMarket
+spring:
+  datasource:
+    url: jdbc:h2:mem:schema;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+    driver-class-name: org.h2.Driver
+    username: iam
+    password: iam
+
+  jpa:
+    hibernate:
+      ddl-auto: update   # crea tablas en memoria y las elimina al terminar
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    open-in-view: false
+
+  sql:
+    init:
+      mode: always  # ejecuta schema.digitalMarket-test.sql y data.digitalMarket-test.sql si existen

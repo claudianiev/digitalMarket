@@ -1,0 +1,14 @@
+services:
+
+  db:
+    image: postgres:15.2
+    container_name: digitalMarket
+    restart: always
+    volumes:
+      - ./db/sql/digitalMarket.sql:/docker-entrypoint-initdb.d/digitalMarket.sql
+    environment:
+      - POSTGRES_DB=digitalMarket
+      - POSTGRES_USER=cnieves
+      - POSTGRES_PASSWORD=cnieves83
+    ports:
+      - "5433:5432"

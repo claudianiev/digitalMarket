@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: PRODUCT-SERVICE
+  profiles:
+    active: dev
+  cloud:
+    config:
+      import: "optional:configserver:http://localhost:7777"
+
+  datasource:
+    url: "jdbc:postgresql://localhost:5433/digitalMarket"
+    username: cnieves
+    password: cnieves83
+    hikari:
+      maximum-pool-size: 5
+      connection-timeout: 20000
+      driver-class-name: org.postgresql.Driver

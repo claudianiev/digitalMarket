@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: IAM-SERVICE
+  profiles:
+    active: dev
+  cloud:
+    config:
+      import: "optional:configserver:http://localhost:7777"
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 5
+      connection-timeout: 20000
+      driver-class-name: org.postgresql.Driver

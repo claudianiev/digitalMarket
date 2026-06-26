@@ -1,0 +1,64 @@
+services:
+  digitalMarket_db:
+    image: postgres:15.2
+    container_name: digitalMarket_db
+    volumes:
+      - ./iamService/db/sql/digitalMarket.sql:/docker-entrypoint-initdb.d/digitalMarket.sql
+    environment:
+        - POSTGRES_DB=digitalMarket
+        - POSTGRES_USER=cnieves
+        - POSTGRES_PASSWORD=cnieves83
+    ports:
+      - "5433:5432"
+    networks:
+      - backend-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cnieves -d digitalMarket"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+  iam-service:
+    build:
+      context: ./iamService
+    container_name: iam-service
+    depends_on:
+      digitalMarket_db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:postgresql://digitalMarket_db:5432/digitalMarket
+      SPRING_DATASOURCE_USERNAME: cnieves
+      SPRING_DATASOURCE_PASSWORD: cnieves83
+      SERVER_PORT: 8081
+      SPRING_JPA_DATdigitalMarketABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+    ports:
+      - "8085:8081"
+    networks:
+      - backend-net
+
+
+  product-service:
+    build:
+      context: ./productService
+    container_name: product-service
+    depends_on:
+      digitalMarket_db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:postgresql://digitalMarket_db:5432/digitalMarket
+      SPRING_DATASOURCE_USERNAME: cnieves
+      SPRING_DATASOURCE_PASSWORD: cnieves83
+      SERVER_PORT: 8082
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+    ports:
+      - "8086:8082"
+    networks:
+      - backend-net
+networks:
+  backend-net:
+    driver: bridge
