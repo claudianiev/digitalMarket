@@ -20,35 +20,36 @@ Backend desarrollado con arquitectura de microservicios usando Spring Boot.
 - IAM Service
 - Product Service
 
-## Arquitectura general
-
-                         ┌───────────────-──┐
+## 2. Arquitectura general
+ 
+```
+                         ┌─────────────────┐
                          │     Cliente      │
                          └────────┬─────────┘
                                   │
                          ┌────────▼─────────┐
-                         │   API Gateway    │  (Spring Cloud Gateway)
+                         │   API Gateway     │  (Spring Cloud Gateway)
                          └────────┬─────────┘
                                   │
                  ┌────────────────┼────────────────┐
-                 │                                 │
-        ┌────────▼────────┐             ┌──────────▼─────────┐
-        │   IAM Service   │             │  Product Service   │
-        │ (Auth + Usuarios)│            │   (Catálogo)       │
-        │  puerto interno 8081          │ puerto interno 8082│
-        └────────┬────────┘             └──────────┬─────────┘
-                 │                                 │
-                 └───────────────┬─────────────────┘
-                                 │
-                         ┌───────▼─────────┐
-                         │  PostgreSQL 15  │
-                         │ (digitalMarket) │
-                         └─────────────────┘
-
+                 │                                  │
+        ┌────────▼────────┐              ┌──────────▼─────────┐
+        │   IAM Service     │              │  Product Service    │
+        │ (Auth + Usuarios) │              │   (Catálogo)         │
+        │  puerto interno 8081             │  puerto interno 8082 │
+        └────────┬────────┘              └──────────┬─────────┘
+                 │                                  │
+                 └────────────────┬─────────────────┘
+                                  │
+                         ┌────────▼─────────┐
+                         │   PostgreSQL 15   │
+                         │  (digitalMarket)  │
+                         └───────────────────┘
+ 
         ┌───────────────────────────────────┐
-        │  Eureka Server (discoveryService) │  ← registro y descubrimiento
+        │   Eureka Server (discoveryService) │  ← registro y descubrimiento
         └───────────────────────────────────┘
-
+```
         ## 3. Componentes / Microservicios
  
 | Servicio | Carpeta | Responsabilidad | Puerto interno | Puerto expuesto (Docker) |
@@ -68,3 +69,8 @@ Backend desarrollado con arquitectura de microservicios usando Spring Boot.
 - **Base de datos:** PostgreSQL 15.2 (contenedor `digitalMarket_db`)
 - **Contenerización:** Docker / Docker Compose
 - **Build:** *(pendiente confirmar — probablemente Maven, a validar con el `pom.xml` de cada servicio)*
+
+  ## 8. Seguridad
+ 
+- Autenticación basada en **JWT**, gestionada por `iamService` a través de **Spring Security**.
+- *Pendiente confirmar:* flujo exacto de emisión/validación de tokens, manejo de refresh tokens, roles y permisos, y si el API Gateway valida el JWT antes de enrutar o delega esa validación a cada microservicio.
