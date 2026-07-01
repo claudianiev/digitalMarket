@@ -66,6 +66,5 @@ Backend desarrollado con arquitectura de microservicios usando Spring Boot.
 - **Gateway:** Spring Cloud Gateway
 - **Descubrimiento de servicios:** Netflix Eureka
 - **Base de datos:** PostgreSQL 15.2 (contenedor `digitalMarket_db`)
-  - *Nota:* el README menciona MySQL, pero el `docker-compose.yml` usa la imagen `postgres:15.2`. Vale la pena confirmar cuál es la fuente de verdad actual.
 - **Contenerización:** Docker / Docker Compose
 - **Build:** *(pendiente confirmar — probablemente Maven, a validar con el `pom.xml` de cada servicio)*
